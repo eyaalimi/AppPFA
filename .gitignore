@@ -1,0 +1,12 @@
+*.pem
+*.terraform
+terraform.tfstate
+terraform.tfstate.backup
+*terraform.lock.hcl
+
+venv/
+docker/buildapp/venv/
+
+# Ignorer les fichiers Terraform temporaires
+.terraform/
+

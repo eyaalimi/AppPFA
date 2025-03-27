@@ -1,0 +1,2 @@
+public ip adresse : 54.235.3.167
+adresse de l'instance 172.31.26.178
