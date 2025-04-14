@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deploy
+  namespace: icgroup 
+  labels: 
+    env: prod 
+    app: postgres 
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        env: 
+        - name: POSTGRES_DB 
+          valueFrom:
+            configMapKeyRef:
+              key: databases
+              name: postgres-cm 
+        - name: POSTGRES_PASSWORD 
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: postgres-secret
+        - name: POSTGRES_USER 
+          valueFrom:
+            configMapKeyRef:
+              key: user
+              name: postgres-cm
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data/pgdata
+      volumes: 
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pvc 

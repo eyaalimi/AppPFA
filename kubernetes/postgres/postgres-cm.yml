@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-cm
+  namespace: icgroup 
+  labels: 
+    env: prod 
+    app: postgres 
+data:
+  user: odoo 
+  database: postgres 

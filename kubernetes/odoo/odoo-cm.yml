@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: odoo-cm
+data:
+  user: odoo
+  host: postgres-svc

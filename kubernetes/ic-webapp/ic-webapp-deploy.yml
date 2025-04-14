@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ic-webapp-deploy
+  namespace: icgroup 
+  labels: 
+    env: prod 
+    app: ic-webapp
+spec:
+  selector:
+    matchLabels:
+      app: ic-webapp 
+  template:
+    metadata:
+      labels:
+        app: ic-webapp 
+    spec:
+      containers:
+      - name: ic-webapp 
+        image: ic-webapp:1.0
+        env: 
+        - name: ODOO_URL
+          valueFrom: 
+            configMapKeyRef:
+              key: ODOO_URL
+              name: ic-webapp-cm 
+        - name: PGADMIN_URL
+          valueFrom:
+            configMapKeyRef:
+               key: PGADMIN_URL 
+               name: ic-webapp-cm
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080

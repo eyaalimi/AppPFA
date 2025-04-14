@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ic-webapp-cm 
+  namespace: icgroup 
+  labels: 
+    env: prod 
+    app: ic-webapp 
+data:
+   ODOO_URL: http://172.20.10.3:30010
+   PGADMIN_URL: http://172.20.10.3:30011
