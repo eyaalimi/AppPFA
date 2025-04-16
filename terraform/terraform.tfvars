@@ -12,8 +12,8 @@ security_groups_ports = [
 instance_type = "t2.medium"
 username      = "ubuntu"
 # key_name      = "key_project"
-protocol      = "tcp"
-region        = "us-east-1"
-stack         = "kubernetes"
-private_key_path  = "C:\\Users\\Lenovo\\ic-webapp\\terraform\\keypair\\key_project.pem"
+protocol         = "tcp"
+region           = "us-east-1"
+stack            = "kubernetes"
+private_key_path = "C:\\Users\\Lenovo\\ic-webapp\\terraform\\keypair\\key_project.pem"
 

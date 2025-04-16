@@ -24,6 +24,10 @@ resource "aws_instance" "ec2_project" {
       "sudo ./scripts/docker.sh"      # Exécuter le script
     ]
   }
+  provisioner "local-exec" {
+    command = "echo Your Public ip Adress: ${self.public_ip} >> ./ip/docker_ip.txt"
+
+  }
 
   tags = {
     Name = var.instance_name

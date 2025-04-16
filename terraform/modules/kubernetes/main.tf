@@ -14,9 +14,9 @@ resource "aws_instance" "ec2_project" {
 
   # Utilisation du provisioner file pour envoyer le script
   provisioner "file" {
-    source      = "C:/Users/Lenovo/ic-webapp/terraform/scripts/kubernetes.sh"  # Local path
-    destination = "/tmp/kubernetes.sh"  # Remote path (where the script will be stored on the instance)
-    
+    source      = "C:/Users/Lenovo/ic-webapp/terraform/scripts/kubernetes.sh" # Local path
+    destination = "/tmp/kubernetes.sh"                                        # Remote path (where the script will be stored on the instance)
+
     connection {
       type        = "ssh"
       user        = var.username
@@ -35,8 +35,8 @@ resource "aws_instance" "ec2_project" {
     }
 
     inline = [
-      "chmod +x /tmp/kubernetes.sh",  # Rendre le script exécutable
-      "sudo /tmp/kubernetes.sh"       # Exécuter le script
+      "chmod +x /tmp/kubernetes.sh", # Rendre le script exécutable
+      "sudo /tmp/kubernetes.sh"      # Exécuter le script
     ]
   }
   provisioner "local-exec" {
