@@ -3,9 +3,13 @@ kind: ConfigMap
 metadata:
   name: postgres-cm
   labels:
-    env: prod 
-    app: postgres 
-
+    env: prod
+    app: postgres
 data:
   user: odoo
-  databases: postgres
+  password: b2Rvb19wYXNzd29yZA0K   # Ajoute un mot de passe pour l'utilisateur 'odoo'
+  databases: |
+    - name: postgres
+      owner: odoo
+      encoding: UTF8
+      locale: en_US.UTF-8
