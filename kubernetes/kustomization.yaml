@@ -1,6 +1,6 @@
 resources:
   - ./secret-registry 
-  - ./postgres
+  - ./database
   - ./odoo
   - ./pgadmin 
   - ./ic-webapp
