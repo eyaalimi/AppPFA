@@ -34,5 +34,6 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 8080
-        imagePullSecrets:
-           - name: github‑regcred 
+      imagePullSecrets:
+        - name: github-regcred  # Utilise un tiret classique ici
+
