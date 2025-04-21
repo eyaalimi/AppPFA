@@ -7,7 +7,7 @@ metadata:
     app: postgres
 data:
   user: odoo
-  password: b2Rvb19wYXNzd29yZA0K   # Ajoute un mot de passe pour l'utilisateur 'odoo'
+  password: 77u/bXlvZG9vDQo=   # Ajoute un mot de passe pour l'utilisateur 'odoo'
   databases: |
     - name: postgres
       owner: odoo
