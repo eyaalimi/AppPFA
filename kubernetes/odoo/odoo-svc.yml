@@ -11,5 +11,5 @@ spec:
   ports:
   - port: 8069
     targetPort: 8069 
-    nodeport: 30010
+    nodePort: 30010
   type: NodePort
