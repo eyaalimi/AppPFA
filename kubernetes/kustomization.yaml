@@ -1,0 +1,6 @@
+resources:
+  - ./secret-registry 
+  - ./database
+  - ./odoo
+  - ./pgadmin 
+  - ./ic-webapp
