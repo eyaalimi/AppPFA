@@ -3,9 +3,10 @@ kind: Deployment
 metadata:
   name: odoo-deploy
   labels: 
-    env: prod 
+    env: prod
     app: odoo
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: odoo
@@ -14,43 +15,45 @@ spec:
       labels:
         app: odoo
     spec:
+      imagePullSecrets:
+        - name: github-regcred  # <-- Ajoute ceci si tu utilises un registre privé
       containers:
       - name: odoo
         image: odoo:17.0
-        env: 
-          - name: HOST 
-            valueFrom:
-               configMapKeyRef:
-                 key: host 
-                 name: odoo-cm 
-          - name: USER 
+        env:
+          - name: HOST
             valueFrom:
               configMapKeyRef:
-                key: user 
-                name: odoo-cm 
-          - name: PASSWORD 
-            valueFrom: 
+                key: host
+                name: odoo-cm
+          - name: USER
+            valueFrom:
+              configMapKeyRef:
+                key: user
+                name: odoo-cm
+          - name: PASSWORD
+            valueFrom:
               secretKeyRef:
-                key: password 
+                key: password
                 name: odoo-secret
-              
         resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+          # Uncomment and adjust these values as needed:
+          # limits:
+          #   memory: "128Mi"
+          #   cpu: "500m"
         ports:
-        - containerPort: 8069
+          - containerPort: 8069
         volumeMounts:
-        - name: odoo-storage
-          mountPath: /var/lib/odoo
-        - name: odoo-storage-config 
-          mountPath: /etc/odoo
-        - name: odoo-storage-addons 
-          mountPath: /mnt/extra-addons
+          - name: odoo-storage
+            mountPath: /var/lib/odoo
+          - name: odoo-storage-config
+            mountPath: /etc/odoo
+          - name: odoo-storage-addons
+            mountPath: /mnt/extra-addons
       volumes:
         - name: odoo-storage
           persistentVolumeClaim:
-            claimName: odoo-pvc  
+            claimName: odoo-pvc
         - name: odoo-storage-config
           hostPath:
             path: /data-odoo/config

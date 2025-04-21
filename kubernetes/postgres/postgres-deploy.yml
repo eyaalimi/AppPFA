@@ -34,9 +34,9 @@ spec:
               key: user
               name: postgres-cm
         resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+          #limits:
+            #memory: "128Mi"
+            #cpu: "500m"
         ports:
         - containerPort: 5432
         volumeMounts:

@@ -29,9 +29,9 @@ spec:
               key: password 
               name: postgres-secret 
         resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+          #limits:
+            #memory: "128Mi"
+            #cpu: "500m"
         ports:
         - containerPort: 80 
         volumeMounts: 
