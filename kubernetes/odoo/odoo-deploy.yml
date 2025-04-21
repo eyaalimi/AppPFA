@@ -26,7 +26,7 @@ spec:
           - "--db_user=$(USER)"
           - "--db_password=$(PASSWORD)"
           - "--db_port=5432"
-          - "--addons-path=/mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons"
+          - "--addons-path=/usr/lib/python3/dist-packages/odoo/addons"
         env:
           - name: HOST
             valueFrom:
