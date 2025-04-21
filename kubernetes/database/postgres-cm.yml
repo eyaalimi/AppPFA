@@ -1,3 +1,4 @@
+# postgres-cm.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -5,4 +6,3 @@ metadata:
 data:
   databases: postgres
   user: odoo
-
