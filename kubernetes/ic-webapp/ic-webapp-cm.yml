@@ -6,5 +6,5 @@ metadata:
     env: prod 
     app: ic-webapp 
 data:
-   ODOO_URL: http://localhost:30010
-   PGADMIN_URL: http://localhost:30011
+   ODOO_URL: http://52.200.92.250:30010
+   PGADMIN_URL: http://52.200.92.250:30011
