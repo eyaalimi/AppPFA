@@ -1,7 +1,6 @@
---- 
-- name: apply kubernetes manifest file 
+---
+- name: apply kubernetes manifest file
   hosts: localhost
-  tasks: 
-    - name: apply manifest file 
-      command: "kubectl --kubeconfig=./kubeconfig-k3s.yml apply -k /home/ubuntu/AppPFA/kubernetes --validate=false "
-      
+  tasks:
+    - name: apply manifest file
+      command: "kubectl --kubeconfig=/home/ubuntu/AppPFA/ansible/kubeconfig-k3s.yml apply -k /home/ubuntu/AppPFA/kubernetes --validate=false"
