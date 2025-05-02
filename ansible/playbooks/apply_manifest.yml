@@ -3,5 +3,5 @@
   hosts: localhost
   tasks: 
     - name: apply manifest file 
-      command: "kubectl --kubeconfig=$PWD/ansible/kubeconfig/kubeconfig apply -k ~/ic-webapp/kubernetes"
+      command: "kubectl --kubeconfig=./kubeconfig-k3s.yml apply -k /home/ubuntu/AppPFA/ansible/kubernetes --validate=false "
       
