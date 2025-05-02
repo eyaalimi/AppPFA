@@ -3,5 +3,5 @@
   hosts: localhost
   tasks: 
     - name: apply manifest file 
-      command: "kubectl --kubeconfig=./kubeconfig-k3s.yml apply -k ~/AppPFA/kubernetes --validate=false "
+      command: "kubectl --kubeconfig=./kubeconfig-k3s.yml apply -k /home/ubuntu/AppPFA/kubernetes --validate=false "
       
