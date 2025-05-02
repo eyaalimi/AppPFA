@@ -1,0 +1,7 @@
+--- 
+- name: apply kubernetes manifest file 
+  hosts: localhost
+  tasks: 
+    - name: apply manifest file 
+      command: "kubectl --kubeconfig=$PWD/ansible/kubeconfig/kubeconfig apply -k ~/ic-webapp/kubernetes"
+      

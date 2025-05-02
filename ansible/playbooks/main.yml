@@ -1,0 +1,2 @@
+- import_playbook: retrieve_kubeconfig.yml
+- import_playbook: apply_manifest.yml 
