@@ -66,11 +66,11 @@ pipeline {
              steps{
                  script {
                      sh '''
-                         mkdir -p $HOME/.aws
-                         echo "[default]" > $HOME/.aws/credentials
-                         echo "aws_access_key_id=$AWS_ACCESS_KEY_ID" >> $HOME/.aws/credentials
-                         echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" >> $HOME/.aws/credentials
-                         chmod 400 $HOME/.aws/credentials
+                         mkdir -p /root/.aws
+                         echo "[default]" > /root/.aws/credentials
+                         echo "aws_access_key_id=$AWS_ACCESS_KEY_ID" >> /root/.aws/credentials
+                         echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" >> /root/.aws/credentials
+                         chmod 400 /root/.aws/credentials
 
                          cd terraform/
                          terraform init
