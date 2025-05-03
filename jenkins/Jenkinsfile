@@ -77,10 +77,22 @@ pipeline {
 
                          cd terraform/
                          terraform init
-                        terraform apply  -auto-approve
+                        terraform apply -var="stack=docker" -auto-approve
                      '''
                  }
              }
+         }
+         stage ('Checkfile for docker'){
+            agent { docker { image 'alpine:latest'}}
+            steps {
+                script {
+                    sh '''
+                       echo "checking file stage .." 
+                       cat " ansible/host_vars/docker.yml
+
+                    '''
+                }
+            }
          }
           stage ('Ansible deploy on docker vm'){
              agent {
