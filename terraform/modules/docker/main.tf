@@ -19,10 +19,7 @@ resource "aws_instance" "ec2_project" {
       host        = self.public_ip
     }
 
-    inline = [
-      "chmod +x ./scripts/docker.sh", # Rendre le script exécutable
-      "sudo ./scripts/docker.sh"      # Exécuter le script
-    ]
+     scripts = ["./scripts/docker.sh"]
   }
   provisioner "local-exec" {
     command = "echo -e '\nansible_host: ${self.public_ip}' >> ../ansible/host_vars/docker.yaml"
