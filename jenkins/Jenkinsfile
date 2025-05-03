@@ -17,7 +17,7 @@ pipeline {
              steps{
                  script {
                      sh '''
-                         docker build --no-cache -f ${DOCKER_DIR}/${DOCKERFILE_NAME} -t ${DOCKERHUB_ID}/${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_DIR}/.
+                         sudo docker build --no-cache -f ${DOCKER_DIR}/${DOCKERFILE_NAME} -t ${DOCKERHUB_ID}/${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_DIR}/.
                      '''
                  }
              }
@@ -26,8 +26,8 @@ pipeline {
              steps{
                  script {
                      sh '''
-                         docker ps -a | grep -i ${DOCKER_IMAGE} && docker rm -f  ${DOCKER_IMAGE}
-                         docker run --name ${DOCKER_IMAGE} -dp $PORT_EXT:$PORT_APP ${DOCKERHUB_ID}/${DOCKER_IMAGE}:${DOCKER_TAG}
+                         sudo docker ps -a | grep -i ${DOCKER_IMAGE} && docker rm -f  ${DOCKER_IMAGE}
+                         sudo docker run --name ${DOCKER_IMAGE} -dp $PORT_EXT:$PORT_APP ${DOCKERHUB_ID}/${DOCKER_IMAGE}:${DOCKER_TAG}
                         sleep 5
                          curl -I http://$IP:$PORT_EXT | grep -i "200"
                      '''
@@ -38,7 +38,7 @@ pipeline {
              steps{
                  script {
                      sh '''
-                         docker ps -a | grep -i ${DOCKER_IMAGE} && docker rm -f  ${DOCKER_IMAGE}
+                         sudo docker ps -a | grep -i ${DOCKER_IMAGE} && docker rm -f  ${DOCKER_IMAGE}
                      '''
                  }
              }
@@ -48,7 +48,7 @@ pipeline {
                  script {
                      sh '''
                          echo $DOCKERHUB_PASSWORD | docker login -u ${DOCKERHUB_ID} --password-stdin
-                         docker push ${DOCKERHUB_ID}/${DOCKER_IMAGE}:${DOCKER_TAG}
+                         sudo docker push ${DOCKERHUB_ID}/${DOCKER_IMAGE}:${DOCKER_TAG}
                      '''
                  }
              }
