@@ -25,7 +25,8 @@ resource "aws_instance" "ec2_project" {
     ]
   }
   provisioner "local-exec" {
-    command = "echo Your Public ip Adress: ${self.public_ip} >> ./ip/docker_ip.txt"
+    command = "echo -e '\nansible_host: ${self.public_ip}' >> ../ansible/host_vars/docker.yaml"
+
 
   }
 
