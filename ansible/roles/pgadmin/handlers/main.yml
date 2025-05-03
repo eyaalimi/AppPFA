@@ -1,0 +1,9 @@
+#SPDX-License-Identifier: MIT-0
+---
+# handlers file for pgadmin
+pgadmin_name: pgadmin
+pgadmin_email: odoo@eya.fr
+pgadmin_password: pgadmin
+pgadmin_image: dpage/pgadmin4
+pgadmin_port: 8082
+network: "{{ network }}"

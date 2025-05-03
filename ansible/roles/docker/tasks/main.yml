@@ -1,0 +1,39 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for docker
+- name: update ubuntu 
+  apt: 
+    update_cache: yes 
+    upgrade: dist 
+
+- name: download docker script 
+  get_url:
+    url: https://get_docker.com
+    dest: /tmp/install-docker.sh
+    node: '0755'
+
+- name: install docker 
+  command: sh /tmp/install-docker.sh
+  become: yes
+
+- name: start docker service 
+  service:
+    name: docker 
+    state: started 
+    enabled: yes 
+
+- name: check docker group
+  group:
+    name: docker 
+    state: present 
+  become: yes 
+  notify: restart docker service
+
+- name: add user to docker group 
+  user:
+    name: "{{ ansible_user }}"
+    group: docker 
+    append: yes
+  become: yes 
+  notify: restart docker service
+

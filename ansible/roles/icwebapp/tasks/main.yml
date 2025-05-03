@@ -1,0 +1,23 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for icwebapp
+- name: install docker pip
+  package:
+    name: python3-docker
+    state: present
+
+- name: create network
+  docker_network:
+    name: "{{ network }}"
+
+- name: run ic webapp
+  docker_container:
+    name: "{{ icw_container_name }}"
+    image: "{{ icw_image }}"
+    ports:
+      - "{{ icw_port }}:8080"
+    env:
+      ODOO_URL: "{{ odoo_url }}"
+      PGADMIN_URL: "{{ pgadmin_url }}"
+    networks:
+      - name: "{{ network }}"

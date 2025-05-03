@@ -1,0 +1,11 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for odoo
+- name: generate docker compose
+  template:
+    src: "odoo-compose.yaml.j2"
+    dest: "/home/{{ ansible_user }}/odoo-compose.yaml"
+    mode: "0555"
+
+- name: start odoo stack
+  command: " docker compose -f /home/{{ ansible_user }}/odoo-compose.yaml up -d"

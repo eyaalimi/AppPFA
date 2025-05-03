@@ -3,3 +3,4 @@ all:
      prod: 
        hosts:
          k3s:
+         docker:

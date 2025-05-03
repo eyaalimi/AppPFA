@@ -1,0 +1,11 @@
+---
+- name: docker_deploy
+  hosts: docker
+  become: true
+  vars:
+    network: webapp-network
+  roles:
+    - docker
+    - icwebapp
+    - odoo
+    - pgdamin
