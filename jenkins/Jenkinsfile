@@ -100,17 +100,16 @@ pipeline {
                       }
              }
             environment {
-             ANSIBLE_LOCAL_TEMP = '/tmp/.ansible'
-             ANSIBLE_CONFIG = '/etc/ansible/ansible.cfg'
+             ANSIBLE_CONFIG = './ansible/ansible.cfg'
             }
              steps {
                script {
                  sh '''
                     mkdir -p /tmp/.ansible
                     chmod 700 /tmp/.ansible
-                    cd ansible/
-                    ansible-playbook playbooks/docker/main.yaml
-            '''
+                    ls -l ansible/playbooks/docker/main.yaml
+                    ansible-playbook ansible/playbooks/docker/main.yaml
+                 '''
         }
     }
 }
