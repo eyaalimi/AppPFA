@@ -74,6 +74,7 @@ pipeline {
                          chmod 400 "$AWS_DIR/credentials"
 
                         export AWS_SHARED_CREDENTIALS_FILE="$AWS_DIR/credentials"
+                        export PATH=/usr/local/bin:$PATH
 
                          cd terraform/
                          terraform init
