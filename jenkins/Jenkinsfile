@@ -77,7 +77,7 @@ pipeline {
 
                          cd terraform/
                          terraform init
-                        terraform apply -var="stack=docker" -auto-approve
+                        terraform apply  -auto-approve
                      '''
                  }
              }
