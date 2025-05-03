@@ -88,7 +88,7 @@ pipeline {
                 script {
                     sh '''
                        echo "checking file stage .." 
-                       cat " ansible/host_vars/docker.yml"
+                       cat "ansible/host_vars/docker.yml"
                     '''
                 }
             }
