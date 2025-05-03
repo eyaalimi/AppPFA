@@ -1,6 +1,5 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# handlers file for docker
+#handlers file for docker
 - name: restart docker service 
   service:
     name: docker 
