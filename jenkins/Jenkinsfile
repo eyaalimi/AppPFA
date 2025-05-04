@@ -93,35 +93,35 @@ pipeline {
                 }
             }
          }
-         stage('Ansible deploy on docker vm') {
-            agent {
-                docker {
-                   image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
-                      }
-             }
-             environment {
-                   ANSIBLE_LOCAL_TEMP = "${WORKSPACE}/tmp/.ansible/tmp"
-                   ANSIBLE_REMOTE_TEMP = "${WORKSPACE}/tmp/.ansible/remote"
-                   ANSIBLE_CONFIG = "${WORKSPACE}/ansible/ansible.cfg"
-                    }
+//          stage('Ansible deploy on docker vm') {
+//             agent {
+//                 docker {
+//                    image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
+//                       }
+//              }
+//              environment {
+//                    ANSIBLE_LOCAL_TEMP = "${WORKSPACE}/tmp/.ansible/tmp"
+//                    ANSIBLE_REMOTE_TEMP = "${WORKSPACE}/tmp/.ansible/remote"
+//                    ANSIBLE_CONFIG = "${WORKSPACE}/ansible/ansible.cfg"
+//                     }
 
-             steps {
-               script {
-                 sh '''
-                       mkdir -p ${WORKSPACE}/tmp/.ansible/tmp
-                       mkdir -p ${WORKSPACE}/tmp/.ansible/remote
-                       chmod -R 700 ${WORKSPACE}/tmp/.ansible
+//              steps {
+//                script {
+//                  sh '''
+//                        mkdir -p ${WORKSPACE}/tmp/.ansible/tmp
+//                        mkdir -p ${WORKSPACE}/tmp/.ansible/remote
+//                        chmod -R 700 ${WORKSPACE}/tmp/.ansible
 
-                       export ANSIBLE_LOCAL_TEMP=${WORKSPACE}/tmp/.ansible/tmp
-                       export ANSIBLE_REMOTE_TEMP=${WORKSPACE}/tmp/.ansible/remote
-                       export ANSIBLE_CONFIG=${WORKSPACE}/ansible/ansible.cfg
+//                        export ANSIBLE_LOCAL_TEMP=${WORKSPACE}/tmp/.ansible/tmp
+//                        export ANSIBLE_REMOTE_TEMP=${WORKSPACE}/tmp/.ansible/remote
+//                        export ANSIBLE_CONFIG=${WORKSPACE}/ansible/ansible.cfg
 
-                       cd ansible
-                       ansible-playbook playbooks/docker/main.yml
-                     '''
-        }
-    }
-}
+//                        cd ansible
+//                        ansible-playbook playbooks/docker/main.yml
+//                      '''
+//         }
+//     }
+// }
 
         //  stage('Destroy Docker EC2'){
         //      environment{
