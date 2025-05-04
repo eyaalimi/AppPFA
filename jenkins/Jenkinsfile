@@ -108,12 +108,16 @@ pipeline {
              steps {
                script {
                  sh '''
-                      mkdir -p "$ANSIBLE_LOCAL_TEMP"
-                      mkdir -p "$ANSIBLE_REMOTE_TEMP"
-                      chmod -R 700 "$WORKSPACE/tmp/.ansible"
+                       mkdir -p ${WORKSPACE}/tmp/.ansible/tmp
+                       mkdir -p ${WORKSPACE}/tmp/.ansible/remote
+                       chmod -R 700 ${WORKSPACE}/tmp/.ansible
 
-                      cd ansible
-                      ansible-playbook playbooks/docker/main.yml
+                       export ANSIBLE_LOCAL_TEMP=${WORKSPACE}/tmp/.ansible/tmp
+                       export ANSIBLE_REMOTE_TEMP=${WORKSPACE}/tmp/.ansible/remote
+                       export ANSIBLE_CONFIG=${WORKSPACE}/ansible/ansible.cfg
+
+                       cd ansible
+                       ansible-playbook playbooks/docker/main.yml
                      '''
         }
     }
