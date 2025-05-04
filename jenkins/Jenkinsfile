@@ -103,7 +103,7 @@ pipeline {
                script {
                  sh '''
                     cd ansible/
-                    ansible-playbook playbooks/docker/main.yaml
+                    ansible-playbook playbooks/docker/main.yml
                  '''
         }
     }
