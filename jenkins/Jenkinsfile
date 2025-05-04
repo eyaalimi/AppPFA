@@ -99,15 +99,12 @@ pipeline {
                    image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
                       }
              }
-            environment {
-             ANSIBLE_CONFIG = './ansible/ansible.cfg'
-            }
              steps {
                script {
                  sh '''
                     mkdir -p /tmp/.ansible
                     chmod 700 /tmp/.ansible
-                    ls -l ansible/playbooks/docker/main.yaml
+                    export ANSIBLE_LOCAL_TMP=/tmp/.ansible
                     ansible-playbook ansible/playbooks/docker/main.yaml
                  '''
         }
