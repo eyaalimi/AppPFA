@@ -102,6 +102,8 @@ pipeline {
              steps {
                script {
                  sh '''
+                    mkdir -p /tmp/.ansible
+                    chmod 700 /tmp/.ansible
                     cd ansible/
                     ansible-playbook playbooks/docker/main.yml
                  '''
