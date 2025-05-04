@@ -99,18 +99,22 @@ pipeline {
                    image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
                       }
              }
+             environment {
+                   ANSIBLE_LOCAL_TEMP = "${WORKSPACE}/tmp/.ansible/tmp"
+                   ANSIBLE_REMOTE_TEMP = "${WORKSPACE}/tmp/.ansible/remote"
+                   ANSIBLE_CONFIG = "${WORKSPACE}/ansible/ansible.cfg"
+                    }
+
              steps {
                script {
                  sh '''
-                      mkdir -p /tmp/.ansible/tmp
-                      mkdir -p /tmp/.ansible/remote
-                      chmod -R 700 /tmp/.ansible
-                      cd ansible/
-                      export ANSIBLE_CONFIG=$(pwd)/ansible.cfg
-                      export ANSIBLE_LOCAL_TEMP=/var/jenkins_home/workspace/ic-webapp/tmp/.ansible/tmp
-                      export ANSIBLE_REMOTE_TEMP=/var/jenkins_home/workspace/ic-webapp/tmp/.ansible/remote
+                      mkdir -p "$ANSIBLE_LOCAL_TEMP"
+                      mkdir -p "$ANSIBLE_REMOTE_TEMP"
+                      chmod -R 700 "$WORKSPACE/tmp/.ansible"
+
+                      cd ansible
                       ansible-playbook playbooks/docker/main.yml
-                    '''
+                     '''
         }
     }
 }
