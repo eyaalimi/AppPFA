@@ -106,6 +106,7 @@ pipeline {
                       mkdir -p /tmp/.ansible/remote
                       chmod -R 700 /tmp/.ansible
                       cd ansible/
+                      export ANSIBLE_CONFIG=$(pwd)/ansible.cfg
                       ansible-playbook playbooks/docker/main.yml
                     '''
         }
