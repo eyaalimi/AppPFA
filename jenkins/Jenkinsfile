@@ -105,7 +105,7 @@ pipeline {
                     mkdir -p /tmp/.ansible
                     chmod 700 /tmp/.ansible
                     cd ansible/
-                    ansible-playbook playbooks/docker/main.yml
+                    ANSIBLE_CONFIG=./ansible.cfg ansible-playbook playbooks/docker/main.yml
                  '''
         }
     }
