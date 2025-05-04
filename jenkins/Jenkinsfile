@@ -93,6 +93,28 @@ pipeline {
                 }
             }
          }
+          stage('deploy on docker instance') {
+            steps {
+                input message: "Confirmer vous le deploiement Sur l'instance Docker ?", ok: 'Yes'
+            }
+        }
+        stage('ansible deploy on  Docker instance'){
+            agent {
+                docker {
+                    image  'registry.gitlab.com/robconnolly/docker-ansible:latest'
+                }
+            }
+            steps{
+                script {
+                    sh '''
+                        cat  "ansible/host_vars/docker.yml"
+                        cd "ansible/"
+                        ansible docker -m ping --private-key ../terraform/keypair/docker.pem
+                        ansible-playbook playbooks/docker/main.yml --private-key ../terraform/keypair/docker.pem
+                    '''
+                }
+            }
+        }
 //          stage('Ansible deploy on docker vm') {
 //             agent {
 //                 docker {
