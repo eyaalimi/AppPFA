@@ -201,11 +201,11 @@ pipeline {
              }
          }
         stage('Ansible Deploy on Kubernetes') {
-    agent {
-        docker {
-            image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
-        }
-    }
+    // agent {
+    //     docker {
+    //         image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
+    //     }
+    // }
     steps {
         script {
             sh '''
