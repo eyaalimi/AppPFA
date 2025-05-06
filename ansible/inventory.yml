@@ -1,9 +1,7 @@
 ---
 all:
-  children:
-    prod:
-      hosts:
-        k3s-node:
-          ansible_host: <YOUR_IP_HERE>
-          ansible_user: ubuntu
-          ansible_ssh_private_key_file: ../terraform/keypair/kubernetes.pem
+  hosts:
+    k3s:
+      ansible_host: 52.55.188.197
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ~/.ssh/key-project.pem
