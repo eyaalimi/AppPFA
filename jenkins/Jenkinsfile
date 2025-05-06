@@ -200,80 +200,45 @@ pipeline {
                  }
              }
          }
-
-         stage('ansible deploy on kubernetes') {
+        stage('Ansible Deploy on Kubernetes') {
+    // agent {
+    //     docker {
+    //         image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
+    //     }
+    // }
     steps {
         script {
-            // Get the IP from Terraform output
-            def kubeIp = sh(script: 'terraform output -raw kubernetes_ip', returnStdout: true).trim()
-            echo "Kubernetes IP: ${kubeIp}"
+            sh '''
+                echo "==> Récupération de l'IP publique EC2 depuis Terraform"
+                cd terraform
+                terraform output -raw kubernetes_ip > ../ansible/kube_ip.txt
+                cd ../ansible
 
-            // Create inventory.yml dynamically
-            writeFile file: 'ansible/inventory.yml', text: """
-all:
-  children:
-    prod:
-      hosts:
-        k3s-node:
-          ansible_host: ${kubeIp}
-          ansible_user: ubuntu
-          ansible_ssh_private_key_file: ../terraform/keypair/kubernetes.pem
-"""
+                echo "==> Génération dynamique du fichier inventory.yml"
+                KUBE_IP=$(cat kube_ip.txt)
+                cat > inventory.yml <<EOF
+k3s:
+  hosts:
+    k3s-node:
+      ansible_host: $KUBE_IP
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ../terraform/keypair/kubernetes.pem
+EOF
 
-            // Ensure the temporary Ansible directories are created
-            sh 'mkdir -p /tmp/.ansible/tmp /tmp/.ansible/remote'
-            sh 'export ANSIBLE_LOCAL_TEMP=/tmp/.ansible/tmp && export ANSIBLE_REMOTE_TEMP=/tmp/.ansible/remote'
+                echo "==> Préparation des répertoires temporaires Ansible"
+                mkdir -p /tmp/.ansible/tmp /tmp/.ansible/remote
+                export ANSIBLE_LOCAL_TEMP=/tmp/.ansible/tmp
+                export ANSIBLE_REMOTE_TEMP=/tmp/.ansible/remote
 
-            // Test connectivity with Ansible
-            sh 'ansible -i ansible/inventory.yml k3s-node -m ping'
+                echo "==> Test de connectivité SSH avec Ansible"
+                ansible -i inventory.yml k3s -m ping
 
-            // Run the playbook
-            sh 'ansible-playbook -i ansible/inventory.yml playbooks/k3s/main.yml'
+                echo "==> Exécution du playbook Ansible"
+                ansible-playbook -i inventory.yml playbooks/k3s/main.yml
+            '''
         }
     }
 }
-
-
-         //////hedhi nrajaha ken lokhra ///
-//         stage('Ansible Deploy on Kubernetes') {
-//     // agent {
-//     //     docker {
-//     //         image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
-//     //     }
-//     // }
-//     steps {
-//         script {
-//             sh '''
-//                 echo "==> Récupération de l'IP publique EC2 depuis Terraform"
-//                 cd terraform
-//                 terraform output -raw kubernetes_ip > ../ansible/kube_ip.txt
-//                 cd ../ansible
-
-//                 echo "==> Génération dynamique du fichier inventory.yml"
-//                 KUBE_IP=$(cat kube_ip.txt)
-//                 cat > inventory.yml <<EOF
-// k3s:
-//   hosts:
-//     k3s-node:
-//       ansible_host: $KUBE_IP
-//       ansible_user: ubuntu
-//       ansible_ssh_private_key_file: ../terraform/keypair/kubernetes.pem
-// EOF
-
-//                 echo "==> Préparation des répertoires temporaires Ansible"
-//                 mkdir -p /tmp/.ansible/tmp /tmp/.ansible/remote
-//                 export ANSIBLE_LOCAL_TEMP=/tmp/.ansible/tmp
-//                 export ANSIBLE_REMOTE_TEMP=/tmp/.ansible/remote
-
-//                 echo "==> Test de connectivité SSH avec Ansible"
-//                 ansible -i inventory.yml k3s -m ping
-
-//                 echo "==> Exécution du playbook Ansible"
-//                 ansible-playbook -i inventory.yml playbooks/k3s/main.yml
-//             '''
-//         }
-//     }
-// }
 
         //   stage('ansible deploy on  kubernetes'){
         //     agent {
