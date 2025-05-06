@@ -151,7 +151,7 @@ pipeline {
               }
               steps{
                   script {
-                      timeout(timae:30, unit: "MINUTES"){
+                      timeout(time:30, unit: "MINUTES"){
                           input message: "Confirmer la suppression de l'instance Docker", ok: 'YES'
                       }
                       sh '''
