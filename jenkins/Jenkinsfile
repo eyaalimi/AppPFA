@@ -98,53 +98,36 @@ pipeline {
         input message: "Confirmer vous le deploiement Sur l'instance Docker ?", ok: 'Yes'
     }
 }
-stage('ansible deploy on  Docker instance'){
-            agent {
-                docker {
-                    image  'registry.gitlab.com/robconnolly/docker-ansible:latest'
-                }
-            }
-            steps{
-                script {
-                    sh '''
-                        cat  "ansible/host_vars/docker.yml"
-                        cd "ansible/"
-                        ansible docker -m ping --private-key ../terraform/keypair/docker.pem
-                        ansible-playbook playbooks/docker/main.yml --private-key ../terraform/keypair/docker.pem
-                    '''
-                }
-            }
+stage('ansible deploy on Docker instance') {
+    agent {
+        docker {
+            image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
+            args '-v /path/to/terraform/keypair:/terraform/keypair'
         }
-// stage('ansible deploy on Docker instance') {
-//     agent {
-//         docker {
-//             image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
-//             args '-v /path/to/terraform/keypair:/terraform/keypair'
-//         }
-//     }
-//     steps {
-//         script {
-//             // Définir les variables d'environnement pour Ansible
-//             env.DEFAULT_LOCAL_TMP = "${WORKSPACE}/ansible_tmp"
-//             env.HOME = "${WORKSPACE}"
+    }
+    steps {
+        script {
+            // Définir les variables d'environnement pour Ansible
+            env.DEFAULT_LOCAL_TMP = "${WORKSPACE}/ansible_tmp"
+            env.HOME = "${WORKSPACE}"
 
-//             // Créer le répertoire temporaire pour Ansible si nécessaire
-//             sh 'mkdir -p ${DEFAULT_LOCAL_TMP}'
+            // Créer le répertoire temporaire pour Ansible si nécessaire
+            sh 'mkdir -p ${DEFAULT_LOCAL_TMP}'
 
-//             // Lancer la commande ansible avec les variables d'environnement
-//             sh """
-//                 echo 'Ansible version:'
-//                 ansible --version
+            // Lancer la commande ansible avec les variables d'environnement
+            sh """
+                echo 'Ansible version:'
+                ansible --version
 
-//                 echo 'Ping Docker instance:'
-//                 ansible docker -m ping --private-key /terraform/keypair/docker.pem
+                echo 'Ping Docker instance:'
+                ansible docker -m ping --private-key /terraform/keypair/docker.pem
 
-//                 echo 'Deploy with Ansible Playbook:'
-//                 ansible-playbook -vvv ansible/playbooks/docker/main.yml --private-key /terraform/keypair/docker.pem -i /ansible/inventory.yml
-//             """
-//         }
-//     }
-// }
+                echo 'Deploy with Ansible Playbook:'
+                ansible-playbook -vvv ansible/playbooks/docker/main.yml --private-key /terraform/keypair/docker.pem -i /ansible/inventory.yml
+            """
+        }
+    }
+}
 
 
 //          stage('Ansible deploy on docker vm') {
