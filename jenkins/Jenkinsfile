@@ -213,9 +213,10 @@ pipeline {
                         cat  "ansible/host_vars/k3s.yml"
                         cd "ansible/"
                         export HOME=$(pwd)
+                        export USER=ubuntu
                         export ANSIBLE_LOCAL_TEMP=/tmp/.ansible/tmp
                         export ANSIBLE_REMOTE_TEMP=/tmp/.ansible/remote
-                        ansible -i inventory.yml k3s -m ping --private-key ../terraform/keypair/kubernetes.pem
+                        ansible -i inventory.yml k3s -m ping --private-key ../terraform/keypair/kubernetes.pem -u ubuntu
                         mkdir -p /tmp/.ansible/tmp
                         export ANSIBLE_LOCAL_TEMP=/tmp/.ansible/tmp
                         ansible-playbook -i inventory.yml playbooks/k3s/main.yml --private-key ../terraform/keypair/kubernetes.pem
