@@ -210,7 +210,7 @@ pipeline {
             steps{
                 script {
                     sh '''
-                        cat  "ansible/host_vars/k3s.yaml"
+                        cat  "ansible/host_vars/k3s.yml"
                         cd "ansible/"
                         ansible k3s -m ping --private-key ../terraform/keypair/kubernetes.pem
                         ansible-playbook playbooks/k3s/main.yml --private-key ../terraform/keypair/kubernetes.pem
