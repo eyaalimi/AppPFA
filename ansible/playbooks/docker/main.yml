@@ -2,10 +2,12 @@
 - name: docker_deploy
   hosts: docker
   become: true
+  include_vars:
+     file: "host_vars/docker.yaml"
   vars:
     network: webapp-network
   roles:
     - docker
     - icwebapp
     - odoo
-    - pgadmin
+    - pgdamin
