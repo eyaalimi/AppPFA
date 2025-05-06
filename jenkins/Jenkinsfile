@@ -123,7 +123,7 @@ stage('ansible deploy on Docker instance') {
                 ansible docker -m ping --private-key /terraform/keypair/docker.pem
 
                 echo 'Deploy with Ansible Playbook:'
-                ansible-playbook -vvv playbooks/docker/main.yml --private-key /terraform/keypair/docker.pem -i /ansible/inventory.yml
+                ansible-playbook -vvv ansible/playbooks/docker/main.yml --private-key /terraform/keypair/docker.pem -i /ansible/inventory.yml
             """
         }
     }
