@@ -13,17 +13,17 @@ resource "aws_instance" "ec2_project" {
   }
 
   # Utilisation du provisioner file pour envoyer le script
-  provisioner "file" {
-    source      = "C:/Users/Lenovo/ic-webapp/terraform/scripts/kubernetes.sh" # Local path
-    destination = "/tmp/kubernetes.sh"                                        # Remote path (where the script will be stored on the instance)
+  # provisioner "file" {
+  #   source      = "C:/Users/Lenovo/ic-webapp/terraform/scripts/kubernetes.sh" # Local path
+  #   destination = "/tmp/kubernetes.sh"                                        # Remote path (where the script will be stored on the instance)
 
-    connection {
-      type        = "ssh"
-      user        = var.username
-      private_key = file(var.private_key_path)
-      host        = self.public_ip
-    }
-  }
+    # connection {
+    #   type        = "ssh"
+    #   user        = var.username
+    #   private_key = file(var.private_key_path)
+    #   host        = self.public_ip
+    # }
+  
 
   # Provisioner remote-exec pour rendre exécutable et exécuter le script
   provisioner "remote-exec" {
@@ -34,13 +34,10 @@ resource "aws_instance" "ec2_project" {
       host        = self.public_ip
     }
 
-    inline = [
-      "chmod +x /tmp/kubernetes.sh", # Rendre le script exécutable
-      "sudo /tmp/kubernetes.sh"      # Exécuter le script
-    ]
+    scripts = ["./scripts/kubernetes.sh"]
   }
   provisioner "local-exec" {
-    command = " echo your   public ip adresse : ${self.public_ip} >> ./ip/kubernetes_ip.txt"
+    command = "echo -e '\nansible_host: ${self.public_ip}' >> ../ansible/host_vars/k3s.yml"
   }
 
   tags = {
