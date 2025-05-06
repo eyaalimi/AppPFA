@@ -4,6 +4,4 @@ all:
     prod:
       hosts:
         k3s:
-          ansible_host: 52.200.92.250
         docker:
-          ansible_host: 52.200.92.250
