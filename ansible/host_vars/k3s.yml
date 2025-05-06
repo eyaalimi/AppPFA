@@ -1,3 +1,3 @@
-ansible_host: 54.197.164.241
+ansible_host: 3.80.63.162
 ansible_user: ubuntu
 ansible_ssh_private_key_file: ../terraform/keypair/kubernetes.pem
