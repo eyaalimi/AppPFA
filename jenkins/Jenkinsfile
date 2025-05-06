@@ -201,21 +201,23 @@ pipeline {
              }
          }
         
-          stage ('Ansible deploy on kubernetes vm'){
-              agent {
-                  docker {
-                      image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
-                  }
-              }
-              steps {
-                  script {
-                      sh '''
-                          cd ansible/
-                          ansible-playbook playbooks/k3s/main.yml
-                  '''
-                  }
-              }
-          }
+          stage('ansible deploy on  kubernetes'){
+            agent {
+                docker {
+                    image  'registry.gitlab.com/robconnolly/docker-ansible:latest'
+                }
+            }
+            steps{
+                script {
+                    sh '''
+                        cat  "ansible/host_vars/k3s.yaml"
+                        cd "ansible/"
+                        ansible k3s -m ping --private-key ../terraform/keypair/kubernetes.pem
+                        ansible-playbook playbooks/k3s/main.yml --private-key ../terraform/keypair/kubernetes.pem
+                    '''
+                }
+            }
+        }
         //  stage('Destroy Kubernetes EC2'){
         //      environment{
         //          AWS_ACCESS_KEY_ID = credentials('aws_access_key_id')
