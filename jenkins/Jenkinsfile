@@ -200,30 +200,69 @@ pipeline {
                  }
              }
          }
-        
-          stage('ansible deploy on  kubernetes'){
-            agent {
-                docker {
-                    image  'registry.gitlab.com/robconnolly/docker-ansible:latest'
-                }
-            }
-            steps{
-                script {
-                    sh '''
-                        cat  "ansible/host_vars/k3s.yml"
-                        cd "ansible/"
-                        export HOME=$(pwd)
-                        export USER=ubuntu
-                        export ANSIBLE_LOCAL_TEMP=/tmp/.ansible/tmp
-                        export ANSIBLE_REMOTE_TEMP=/tmp/.ansible/remote
-                        ansible -i inventory.yml k3s -m ping --private-key ../terraform/keypair/kubernetes.pem -u ubuntu
-                        mkdir -p /tmp/.ansible/tmp
-                        export ANSIBLE_LOCAL_TEMP=/tmp/.ansible/tmp
-                        ansible-playbook -i inventory.yml playbooks/k3s/main.yml --private-key ../terraform/keypair/kubernetes.pem
-                    '''
-                }
-            }
+        stage('Ansible Deploy on Kubernetes') {
+    agent {
+        docker {
+            image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
         }
+    }
+    steps {
+        script {
+            sh '''
+                echo "==> Récupération de l'IP publique EC2 depuis Terraform"
+                cd terraform
+                terraform output -raw kubernetes_ip > ../ansible/kube_ip.txt
+                cd ../ansible
+
+                echo "==> Génération dynamique du fichier inventory.yml"
+                KUBE_IP=$(cat kube_ip.txt)
+                cat > inventory.yml <<EOF
+k3s:
+  hosts:
+    k3s-node:
+      ansible_host: $KUBE_IP
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ../terraform/keypair/kubernetes.pem
+EOF
+
+                echo "==> Préparation des répertoires temporaires Ansible"
+                mkdir -p /tmp/.ansible/tmp /tmp/.ansible/remote
+                export ANSIBLE_LOCAL_TEMP=/tmp/.ansible/tmp
+                export ANSIBLE_REMOTE_TEMP=/tmp/.ansible/remote
+
+                echo "==> Test de connectivité SSH avec Ansible"
+                ansible -i inventory.yml k3s -m ping
+
+                echo "==> Exécution du playbook Ansible"
+                ansible-playbook -i inventory.yml playbooks/k3s/main.yml
+            '''
+        }
+    }
+}
+
+        //   stage('ansible deploy on  kubernetes'){
+        //     agent {
+        //         docker {
+        //             image  'registry.gitlab.com/robconnolly/docker-ansible:latest'
+        //         }
+        //     }
+        //     steps{
+        //         script {
+        //             sh '''
+        //                 cat  "ansible/host_vars/k3s.yml"
+        //                 cd "ansible/"
+        //                 export HOME=$(pwd)
+        //                 export USER=ubuntu
+        //                 export ANSIBLE_LOCAL_TEMP=/tmp/.ansible/tmp
+        //                 export ANSIBLE_REMOTE_TEMP=/tmp/.ansible/remote
+        //                 ansible -i inventory.yml k3s -m ping --private-key ../terraform/keypair/kubernetes.pem -u ubuntu
+        //                 mkdir -p /tmp/.ansible/tmp
+        //                 export ANSIBLE_LOCAL_TEMP=/tmp/.ansible/tmp
+        //                 ansible-playbook -i inventory.yml playbooks/k3s/main.yml --private-key ../terraform/keypair/kubernetes.pem
+        //             '''
+        //         }
+        //     }
+        // }
         //  stage('Destroy Kubernetes EC2'){
         //      environment{
         //          AWS_ACCESS_KEY_ID = credentials('aws_access_key_id')
