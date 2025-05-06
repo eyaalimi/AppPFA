@@ -4,6 +4,6 @@ all:
     prod:
       hosts:
         k3s-node:
-          ansible_host: <IP_PUBLIQUE_EC2>
+          ansible_host: <YOUR_IP_HERE>
           ansible_user: ubuntu
           ansible_ssh_private_key_file: ../terraform/keypair/kubernetes.pem
