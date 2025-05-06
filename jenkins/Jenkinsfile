@@ -107,19 +107,28 @@ stage('ansible deploy on Docker instance') {
     }
     steps {
         script {
-            sh '''
-                echo "Check Ansible version"
+            // Définir les variables d'environnement pour Ansible
+            env.DEFAULT_LOCAL_TMP = "${WORKSPACE}/ansible_tmp"
+            env.HOME = "${WORKSPACE}"
+
+            // Créer le répertoire temporaire pour Ansible si nécessaire
+            sh 'mkdir -p ${DEFAULT_LOCAL_TMP}'
+
+            // Lancer la commande ansible avec les variables d'environnement
+            sh """
+                echo 'Ansible version:'
                 ansible --version
 
-                echo "Ping Docker instance"
+                echo 'Ping Docker instance:'
                 ansible docker -m ping --private-key /terraform/keypair/docker.pem
 
-                echo "Deploy with Ansible Playbook"
+                echo 'Deploy with Ansible Playbook:'
                 ansible-playbook -vvv playbooks/docker/main.yml --private-key /terraform/keypair/docker.pem
-            '''
+            """
         }
     }
 }
+
 
 //          stage('Ansible deploy on docker vm') {
 //             agent {
