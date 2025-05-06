@@ -2,10 +2,13 @@
 - name: docker_deploy
   hosts: docker
   become: true
-  include_vars:
-     file: "host_vars/docker.yaml"
   vars:
     network: webapp-network
+  tasks:
+    - name: Include docker variables
+      include_vars:
+        file: "host_vars/docker.yaml"
+
   roles:
     - docker
     - icwebapp
